@@ -1,0 +1,17 @@
+START TRANSACTION;
+DROP TABLE IF EXISTS users_roles;
+DROP TABLE IF EXISTS roles_privileges;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS privileges;
+CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50) NOT NULL, password VARCHAR(100) NOT NULL);
+CREATE TABLE roles (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50) NOT NULL);
+INSERT INTO users (username, password) VALUES ('user1', '$2a$10$WA9Udj74XtaPtZaFpJ6A1uV2UZF03AVvG.tBfO/HY0xndyPPu9VEa'), ('user2', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i');
+INSERT INTO roles (name) VALUES ('ROLE_ADMIN'),('ROLE_USER');
+CREATE TABLE users_roles (user_id INT NOT NULL,role_id INT NOT NULL,  FOREIGN KEY (user_id) REFERENCES users (id), FOREIGN KEY (role_id) REFERENCES roles (id));
+INSERT INTO users_roles (user_id, role_id) VALUES ('1','1'),('2','2');
+CREATE TABLE privileges (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50) NOT NULL);
+CREATE TABLE roles_privileges (role_id INT NOT NULL, privilege_id INT NOT NULL, FOREIGN KEY (role_id) REFERENCES roles (id), FOREIGN KEY (privilege_id) REFERENCES privileges (id));
+INSERT INTO privileges (name) VALUES ('ADMIN_PRIVILEGE'),('USER_PRIVILEGE');
+INSERT INTO roles_privileges (role_id, privilege_id) VALUES ('1','1'),('1','2'),('2','2');
+COMMIT;
